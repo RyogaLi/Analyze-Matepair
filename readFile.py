@@ -23,6 +23,7 @@ def parseFile(filename, chromosome, region, threshold):
 		all the chromosomes)
 	region: a list with len == 2 that indicates which region on that chromosome i.e [100,200] means from 100bp to 200bp
 		(NONE if you are targeting all the chromosomes)
+	threshold: a value which is used to select the distance between a mate pair
 
 	@return
 	chromosome1.chromosome2.matepairs: contains the mate pair that maps to 
@@ -37,13 +38,10 @@ def parseFile(filename, chromosome, region, threshold):
 	mappedBam = pysam.AlignmentFile(filename,"rb")
 
 
-	# if we want to focus on all the chromosomes
+	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != None and region != None:
 		start = region[0]
 		end = region[1]
-		# readPairs = []
-		# fName = chromosome+"."+
-		# f = open(fName)
 		# fetch the reads within region on chromosome
 		for read in mappedBam.fetch(chromosome, start, end):
 			# check if the mate is mapped or not 
@@ -63,11 +61,30 @@ def parseFile(filename, chromosome, region, threshold):
 					read = str(read).split()
 					mate = str(mate).split()
 					if (int(read[3]) - int(mate[3])) >= threshold:
-
 						f.write(str(read)+"\n")
 						f.write(str(mate)+"\n")
 				# readPairs.append((read,mappedBam.mate(read)))
-	# else:
+	else if chromosome != None and region == None:
+		# fetch the reads on chromosome
+		for read in mappedBam.fetch(chromosome):
+			if not read.mate_is_unmapped:
+				# find it's mate pair
+				mate = mappedBam.mate(read)
+				# if mate pair is on another chromosome
+				if mate.reference_id != read.reference_id:
+					# make a new file and store the mate pairs 
+					fName = chromosome+"."+ID_Name[mate.reference_id]+".matepairs"
+					f = open(fName, "a")
+					f.write(str(read)+"\n")
+					f.write(str(mate)+"\n")
+				else: # if the mate is on the same chromosome
+					fName = chromosome+"."+str(threshold)+".matepairs"
+					f = open(fName, "a")
+					read = str(read).split()
+					mate = str(mate).split()
+					if (int(read[3]) - int(mate[3])) >= threshold:
+						f.write(str(read)+"\n")
+						f.write(str(mate)+"\n")
 
 if __name__ == '__main__':
 	parseFile("WY1769.mapped.bam", "chrV", [246500,249500], 100)
