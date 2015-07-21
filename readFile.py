@@ -12,7 +12,7 @@ import os
 ## count the total number of mate pairs that are on other chromosomes txt/cls?
 ## count the number of mate pairs that are far away from each other according to threshold
 
-def parseFile(filename, chromosome, region, threshold):
+def parseFile(filename, chromosome, start, end, threshold):
 	"""
 	Return one or several text files that contains the mate pair 
 	mapping information
@@ -36,12 +36,12 @@ def parseFile(filename, chromosome, region, threshold):
 
 	# open a bam file
 	mappedBam = pysam.AlignmentFile(filename,"rb")
-
+	print chromosome
+	print start 
+	print end
 
 	# if we want to focus on a region on one sepecific chromosome
-	if chromosome != None and region != None:
-		start = region[0]
-		end = region[1]
+	if chromosome != "" and start != "" and end != "":
 		# fetch the reads within region on chromosome
 		for read in mappedBam.fetch(chromosome, start, end):
 			# check if the mate is mapped or not 
@@ -64,7 +64,7 @@ def parseFile(filename, chromosome, region, threshold):
 						f.write(str(read)+"\n")
 						f.write(str(mate)+"\n")
 				# readPairs.append((read,mappedBam.mate(read)))
-	else if chromosome != None and region == None:
+	elif chromosome != "" and start == "" and end == "":
 		# fetch the reads on chromosome
 		for read in mappedBam.fetch(chromosome):
 			if not read.mate_is_unmapped:
@@ -87,4 +87,19 @@ def parseFile(filename, chromosome, region, threshold):
 						f.write(str(mate)+"\n")
 
 if __name__ == '__main__':
-	parseFile("WY1769.mapped.bam", "chrV", [246500,249500], 100)
+	bamFile = sys.argv[1]
+	chromosome = sys.argv[2]
+	start = sys.argv[3]
+	end = sys.argv[4]
+	threshold = sys.argv[5]
+	if start == "" and end != "":
+		print("ERROR: please provide a valid region")
+		exit()
+	if end == "" and start != "":
+		print("ERROR: please provide a valid region")
+		exit()
+	if chromosome == "" and (start != "" or end != ""):
+		print("ERROR: chromosome cannot be NONE if you stated region")
+		exit()
+
+	parseFile(bamFile, chromosome, start, end, threshold)
