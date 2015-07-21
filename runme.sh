@@ -144,7 +144,13 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "========================================"
 		
 		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
-
+		echo "DONE"
+		FILE="./*"
+		for f in $FILE
+ 		do
+ 			echo "$f"
+ 			python ../../plot.py "$f"
+		done
 
 	# ===================TEST CASE THREE====================== #
 	# Chromosome name; start region; end region were provided 
@@ -168,7 +174,8 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH" &
+		
 
 	# ===================TEST CASE FOUR====================== #
 	# Chromosome name; threshold were provided 
@@ -209,7 +216,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-	 	python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$DEFAULT_THRESH"
+	 	python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOMEf" "" "" "$DEFAULT_THRESH"
 	# cd ..
 	fi
 fi

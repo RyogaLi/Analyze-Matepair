@@ -37,7 +37,7 @@ def parseFile(filename, chromosome, start, end, threshold):
 
 	# open a bam file
 	mappedBam = pysam.AlignmentFile(filename,"rb")
-	print(chromosome,start, end)
+	# print(chromosome,start, end)
 	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != "" and start != "" and end != "":
 
@@ -121,12 +121,13 @@ if __name__ == '__main__':
 	threshold = sys.argv[5]
 	if start == "" and end != "":
 		print("ERROR: please provide a valid region")
-		exit()
+		quit()
 	if end == "" and start != "":
 		print("ERROR: please provide a valid region")
-		exit()
+		quit()
 	if chromosome == "" and (start != "" or end != ""):
 		print("ERROR: chromosome cannot be NONE if you stated region")
-		exit()
+		quit()
 
 	parseFile(bamFile, chromosome, start, end, threshold)
+	quit()
