@@ -64,8 +64,13 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  	then
  	echo "Analyzing all the chromosomes............................."
  	echo "Press control + z to quit the program"
- 	rm -f -rf results_DEFAULT
- 	mkdir results_DEFAULT
+
+ 	if[ -d ./results_DEFAULT ] ; then
+ 		rm -f -rf results_DEFAULT
+ 	else
+ 		mkdir results_DEFAULT
+ 	fi
+
  	cd results_DEFAULT
  	for i in "${chrs[@]}"
  	do
@@ -80,18 +85,23 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
 # one dir will be generated 
 elif ! [ -z "$CHROMOSOME" ]
 	then 
-		rm -f -rf "$CHROMOSOME"
-		mkdir "$CHROMOSOME"
- 		cd "$CHROMOSOME"
- 		if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
- 			then
- 			python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
- 		elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
- 			then
- 			python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
- 		else 
- 			# then 
- 			python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
- 		cd ..
- 		fi
+
+ 	if[ -d ./results_"$CHROMOSOME" ] ; then
+ 		rm -f -rf results_"$CHROMOSOME"
+ 	else
+ 		mkdir results_"$CHROMOSOME"
+ 	fi
+
+	cd "$CHROMOSOME"
+	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
+		then
+		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
+	elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
+		then
+		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+	else 
+		# then 
+		python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
+	cd ..
+	fi
 fi
