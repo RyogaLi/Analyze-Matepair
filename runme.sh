@@ -21,14 +21,13 @@ if [[ "$#" = 0 ]]
 	exit
 fi
 
-
 while [[ $# > 0 ]]
 do
 	key="$1"
 
 	case $key in
-		-f|--filename)
-	    FILENAME="$2"
+		-f|--filepath)
+	    FILEPATH="$2"
 	    shift # past argumen0t
 	    ;;
 	    -c|--chromosome)
@@ -50,25 +49,39 @@ do
 	esac
 	shift # past argument or value
 done
-echo "========================================"
-echo FILE = "${FILENAME}"
-echo CHROMOSOME  = "${CHROMOSOME}"
-echo REGION START     = "${REGIONSTART}"
-echo REGION END     = "${REGIONEND}"
-echo THRESHOLD    = "${THRESHOLD}"
-echo "========================================"
+# echo "========================================"
+# echo FILE = "${FILEPATH}"
+# echo CHROMOSOME  = "${CHROMOSOME}"
+# echo REGION START     = "${REGIONSTART}"
+# echo REGION END     = "${REGIONEND}"
+# echo THRESHOLD    = "${THRESHOLD}"
+# echo "========================================"
 
 # case one: only filename is provided. All the chromosmes will be analyzed 
 # one directory will be generated for each chromosome
 # threshold will be set to 1000
+
+# ===================TEST CASE ONE====================== #
+# No chromosome is provided. Run default parameters
+# generate 16 directories and each directory contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
+
 if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z "$THRESHOLD" ]
  	then
- 	echo "Analyzing all the chromosomes............................."
+ 	echo "========================================"
+ 	echo "Analyzing all the chromosomes in file ${FILEPATH}............................."
+ 	echo "Default threshold: 1000"
  	echo "Press control + z to quit the program"
+ 	echo "========================================"
 
- 	if[ -d ./results_DEFAULT ] ; then
+ 	# check if result file exists 
+ 	if [ -d results_DEFAULT ] # if yes, remove the old result directory
+ 		then
+ 		# echo "DIR exists"
  		rm -f -rf results_DEFAULT
- 	else
+ 	fi
+ 	if [ ! -d results_DEFAULT ] # if no, make a new directory
+ 		then 
+ 		# echo "DIR not exists"
  		mkdir results_DEFAULT
  	fi
 
@@ -78,31 +91,32 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		# creaate directory for each chromosome
  		mkdir $i
  		cd $i
- 		python ../../readFile.py "${FILENAME}" "$i" "" "" "$DEFAULT_THRESH"
+ 		python ../../readFile.py ../../"${FILEPATH}" "$i" "" "" "$DEFAULT_THRESH"
  		cd ..
 	done
-
-# case two: chromosome name is provided. Analyze the chromosome
-# one dir will be generated 
-elif ! [ -z "$CHROMOSOME" ]
-	then 
-
- 	if[ -d ./results_"$CHROMOSOME" ] ; then
- 		rm -f -rf results_"$CHROMOSOME"
- 	else
- 		mkdir results_"$CHROMOSOME"
- 	fi
-
-	cd results_"$CHROMOSOME"
-	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
-		then
-		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
-	elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
-		then
-		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
-	else 
-		# then 
-		python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
-	cd ..
-	fi
 fi
+# # case two: chromosome name is provided. Analyze the chromosome
+# # one dir will be generated 
+# elif ! [ -z "$CHROMOSOME" ]
+# 	then 
+
+#  	if [ -d ./results_"$CHROMOSOME" ]
+#  		then
+#  		rm -f -rf results_"$CHROMOSOME"
+#  	else
+#  		mkdir results_"$CHROMOSOME"
+#  	fi
+
+# 	cd results_"$CHROMOSOME"
+# 	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
+# 		then
+# 		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
+# 	elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
+# 		then
+# 		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+# 	else 
+# 		# then 
+# 		python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
+# 	cd ..
+# 	fi
+# fi
