@@ -21,6 +21,7 @@ if [[ "$#" = 0 ]]
 	exit
 fi
 
+
 while [[ $# > 0 ]]
 do
 	key="$1"
@@ -92,7 +93,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		mkdir results_"$CHROMOSOME"
  	fi
 
-	cd "$CHROMOSOME"
+	cd results_"$CHROMOSOME"
 	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
 		then
 		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"

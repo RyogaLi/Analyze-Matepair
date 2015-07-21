@@ -11,19 +11,7 @@ import matplotlib.pyplot as plt
 # if no region/chromosome is provided
 # for each chromosome find out all the matepairs
 ## count the total number of mate pairs that are on other chromosomes txt/cls?
-## count the number of mate pairs that are far away from each other according to threshold
-
-def generateGraphs(filename):
-	x = []
-	y = []
-	with open(filename, "r") as inputfile:
-		for line in chrXII:
-			line = line.split()
-			x.append(line[3])
-			y.append(line[7])
-			inputfile.next()
-		return (x, y)
-
+## count the number of mate pairs that are far away from each other on the same chromosome according to threshold
 
 def parseFile(filename, chromosome, start, end, threshold):
 	"""
@@ -49,9 +37,9 @@ def parseFile(filename, chromosome, start, end, threshold):
 
 	# open a bam file
 	mappedBam = pysam.AlignmentFile(filename,"rb")
-	print chromosome
-	print start 
-	print end
+	# print chromosome
+	# print start 
+	# print end
 
 	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != "" and start != "" and end != "":
