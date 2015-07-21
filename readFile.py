@@ -43,6 +43,8 @@ def parseFile(filename, chromosome, start, end, threshold):
 
 	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != "" and start != "" and end != "":
+		start = int(start)
+		end = int(end)
 		# fetch the reads within region on chromosome
 		for read in mappedBam.fetch(chromosome, start, end):
 			# check if the mate is mapped or not 

@@ -1,0 +1,1 @@
+./runme.sh -f WY1769.mapped.bam -c chrV -rs 1000 -re 2000 -t 2000

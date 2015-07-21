@@ -94,29 +94,63 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		python ../../readFile.py ../../"${FILEPATH}" "$i" "" "" "$DEFAULT_THRESH"
  		cd ..
 	done
-fi
+
 # # case two: chromosome name is provided. Analyze the chromosome
 # # one dir will be generated 
-# elif ! [ -z "$CHROMOSOME" ]
-# 	then 
 
-#  	if [ -d ./results_"$CHROMOSOME" ]
-#  		then
-#  		rm -f -rf results_"$CHROMOSOME"
-#  	else
-#  		mkdir results_"$CHROMOSOME"
-#  	fi
+# ===================TEST CASE TWO====================== #
+# Only chromosome name is provided 
+# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
 
-# 	cd results_"$CHROMOSOME"
-# 	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
-# 		then
-# 		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
-# 	elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
-# 		then
-# 		python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
-# 	else 
-# 		# then 
-# 		python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
-# 	cd ..
-# 	fi
-# fi
+# ===================TEST CASE THREE====================== #
+# Chromosome name; start region; end region were provided 
+# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
+
+# ===================TEST CASE FOUR====================== #
+# Chromosome name; start region; end region; threshold were provided 
+# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
+
+# ===================TEST CASE FIVE====================== #
+# Chromosome name; threshold were provided 
+# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
+elif ! [ -z "$CHROMOSOME" ]
+	then 
+
+ 	# check if result file exists 
+ 	if [ -d results_"$CHROMOSOME" ] # if yes, remove the old result directory
+ 		then
+ 		# echo "DIR exists"
+ 		rm -f -rf results_"$CHROMOSOME"
+ 	fi
+ 	if [ ! -d results_"$CHROMOSOME" ] # if no, make a new directory
+ 		then 
+ 		# echo "DIR not exists"
+ 		mkdir results_"$CHROMOSOME"
+ 	fi
+
+	cd results_"$CHROMOSOME"
+	# ===================TEST CASE TWO====================== #
+	# Chromosome name; start region; end region; threshold were provided 
+	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
+
+	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
+		then
+		echo "========================================"
+ 		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
+ 		echo "Region start: ${REGIONSTART}"
+ 		echo "Region end: ${REGIONEND}"
+ 		echo "Default threshold: ${THRESHOLD}"
+ 		echo "Press control + z to quit the program"
+ 		echo "========================================"
+		
+		python ../readFile.py ../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
+	fi
+	# elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
+	# 	then
+	# 	python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+	# else 
+	# 	# then 
+	# 	python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
+	# cd ..
+	# fi
+fi
