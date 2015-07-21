@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 def coordinates(filename):
 	"""
 	Take out the mapping position (start position) from a formated text file and save them in (x,y)
