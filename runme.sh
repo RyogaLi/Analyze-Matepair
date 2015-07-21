@@ -79,11 +79,7 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		# echo "DIR exists"
  		rm -f -rf results_DEFAULT
  	fi
- 	if [ ! -d results_DEFAULT ] # if no, make a new directory
- 		then 
- 		# echo "DIR not exists"
- 		mkdir results_DEFAULT
- 	fi
+ 	mkdir results_DEFAULT
 
  	cd results_DEFAULT
  	for i in "${chrs[@]}"
@@ -102,55 +98,80 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
 # Only chromosome name is provided 
 # generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
 
-# ===================TEST CASE THREE====================== #
-# Chromosome name; start region; end region were provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
-
-# ===================TEST CASE FOUR====================== #
-# Chromosome name; start region; end region; threshold were provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
-
 # ===================TEST CASE FIVE====================== #
 # Chromosome name; threshold were provided 
 # generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
+
+
+# ===================TEST CASE SIX====================== #
+# ERROR ONE: only start/end position is entered
+# ERROR TWO: no file name 
+# ERROR THREE: 
+
 elif ! [ -z "$CHROMOSOME" ]
 	then 
 
  	# check if result file exists 
- 	if [ -d results_"$CHROMOSOME" ] # if yes, remove the old result directory
+ 	if [ ! -d results_"$CHROMOSOME" ] # if no, make a new dir
  		then
- 		# echo "DIR exists"
- 		rm -f -rf results_"$CHROMOSOME"
- 	fi
- 	if [ ! -d results_"$CHROMOSOME" ] # if no, make a new directory
- 		then 
- 		# echo "DIR not exists"
+
  		mkdir results_"$CHROMOSOME"
  	fi
+
 
 	cd results_"$CHROMOSOME"
 	# ===================TEST CASE TWO====================== #
 	# Chromosome name; start region; end region; threshold were provided 
 	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
 
-	if ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && ! [ -z "$THRESHOLD"]
+	if ! [ -z "$REGIONSTART" ] && ! [ -z "$REGIONEND" ] && ! [ -z "$THRESHOLD" ]
 		then
+		# check if result file exists 
+	 	if [ -d results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$THRESHOLD" ] # if yes, remove the old result directory
+	 		then
+	 		# echo "DIR exists"
+	 		rm -f -rf results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$THRESHOLD"
+	 	fi
+		# if no, make a new directory
+	 	mkdir results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$THRESHOLD"
+	 	cd results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$THRESHOLD"
 		echo "========================================"
  		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
  		echo "Region start: ${REGIONSTART}"
  		echo "Region end: ${REGIONEND}"
- 		echo "Default threshold: ${THRESHOLD}"
+ 		echo "Threshold: ${THRESHOLD}"
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		
-		python ../readFile.py ../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
-	fi
-	# elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
-	# 	then
-	# 	python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
+
+
+	# ===================TEST CASE THREE====================== #
+	# Chromosome name; start region; end region were provided 
+	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
+
+	elif ! [ -z "$REGIONSTART" ] && ! [ -z "$REGIONEND" ] && [ -z "$THRESHOLD" ]
+		then
+		# check if result file exists 
+	 	if [ -d results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$DEFAULT_THRESH" ] # if yes, remove the old result directory
+	 		then
+	 		# echo "DIR exists"
+	 		rm -f -rf results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$DEFAULT_THRESH"
+	 	fi
+	 	# if no, make a new directory
+		mkdir results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$DEFAULT_THRESH"
+		cd results_"$CHROMOSOME"_"$REGIONSTART"_"$REGIONEND"_"$DEFAULT_THRESH"
+		echo "========================================"
+ 		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
+ 		echo "Region start: ${REGIONSTART}"
+ 		echo "Region end: ${REGIONEND}"
+ 		echo "Default threshold: 1000"
+ 		echo "Press control + z to quit the program"
+ 		echo "========================================"
+		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
 	# else 
 	# 	# then 
 	# 	python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
 	# cd ..
-	# fi
+	fi
 fi
