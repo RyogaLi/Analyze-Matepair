@@ -3,14 +3,14 @@
 # default: analyze all the chromosomes
 # store all the chromosomes' name in an array
 chrs=("chrI" "chrII" "chrIII" "chrIV" "chrV" "chrVI" "chrVII" "chrVIII" "chrIX" "chrX" "chrXI" "chrXII" "chrXIII" "chrXIV" "chrXV" "chrXVI" "chrM")
-DEFAULT_THRESH = 1000
+DEFAULT_THRESH=1000
 # user did not put filename 
 if [[ "$#" = 0 ]]
 	then
 	echo ""
 	echo "ERROR: Filename cannot be none."
 	echo ""
-	echo "usage: runnme.sh -f <input bam file>"
+	echo "usage: runnme.sh -f <full path of bam file>"
 	echo "-c [optional]: <chromosome name>"
 	echo "-t [optional]: <threshold>"
 	echo "-rs [optional]: <start position> "
@@ -72,7 +72,7 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		# creaate directory for each chromosome
  		mkdir $i
  		cd $i
- 		python ../../readFile.py "${FILENAME}" "$i" "" "" DEFAULT_THRESH
+ 		python ../../readFile.py "${FILENAME}" "$i" "" "" "$DEFAULT_THRESH"
  		cd ..
 	done
 
@@ -87,6 +87,11 @@ elif ! [ -z "$CHROMOSOME" ]
  			then
  			python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
  		elif ! [ -z "$REGIONSTART"] && ! [ -z "$REGIONEND"] && [ -z "$THRESHOLD"]
- 			python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" DEFAULT_THRESH
+ 			then
+ 			python ../readFile.py "${FILENAME}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+ 		else 
+ 			# then 
+ 			python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
  		cd ..
+ 		fi
 fi

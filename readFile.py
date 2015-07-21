@@ -3,6 +3,7 @@
 import pysam
 import sys
 import os
+import matplotlib.pyplot as plt
 
 # chr ID = [0,1,2,...,16]
 # take a sorted.mapped.bam file
@@ -11,6 +12,18 @@ import os
 # for each chromosome find out all the matepairs
 ## count the total number of mate pairs that are on other chromosomes txt/cls?
 ## count the number of mate pairs that are far away from each other according to threshold
+
+def generateGraphs(filename):
+	x = []
+	y = []
+	with open(filename, "r") as inputfile:
+		for line in chrXII:
+			line = line.split()
+			x.append(line[3])
+			y.append(line[7])
+			inputfile.next()
+		return (x, y)
+
 
 def parseFile(filename, chromosome, start, end, threshold):
 	"""
@@ -85,6 +98,7 @@ def parseFile(filename, chromosome, start, end, threshold):
 					if (int(read[3]) - int(mate[3])) >= threshold:
 						f.write(str(read)+"\n")
 						f.write(str(mate)+"\n")
+
 
 if __name__ == '__main__':
 	bamFile = sys.argv[1]
