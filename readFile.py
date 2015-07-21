@@ -37,12 +37,10 @@ def parseFile(filename, chromosome, start, end, threshold):
 
 	# open a bam file
 	mappedBam = pysam.AlignmentFile(filename,"rb")
-	# print chromosome
-	# print start 
-	# print end
-
+	print(chromosome,start, end)
 	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != "" and start != "" and end != "":
+
 		start = int(start)
 		end = int(end)
 		# fetch the reads within region on chromosome
@@ -69,6 +67,7 @@ def parseFile(filename, chromosome, start, end, threshold):
 				# readPairs.append((read,mappedBam.mate(read)))
 	elif chromosome != "" and start == "" and end == "":
 		# fetch the reads on chromosome
+		print ("test print one")
 		for read in mappedBam.fetch(chromosome):
 			if not read.mate_is_unmapped:
 				# find it's mate pair

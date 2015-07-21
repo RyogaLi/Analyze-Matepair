@@ -9,4 +9,7 @@
 ##./runme.sh -f WY1769.mapped.bam -c chrV -rs 20000 -re 25000
 
 ## TEST CASE FOUR
-./runme.sh -f WY1769.mapped.bam -c chrV -t 5000
+## ./runme.sh -f WY1769.mapped.bam -c chrV -t 5000
+
+## TEST CASE FIVE 
+./runme.sh -f WY1769.mapped.bam -c chrV

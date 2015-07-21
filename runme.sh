@@ -189,9 +189,27 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$THRESHOLD"
-	# else 
-	# 	# then 
-	# 	python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
+	
+
+	# ===================TEST CASE FIVE====================== #
+	# Only chromosome name is provided 
+	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
+	else 
+	 	# then 
+	 	# check if result file exists 
+	 	if [ -d results_"$CHROMOSOME"_"$DEFAULT_THRESH" ] # if yes, remove the old result directory
+	 		then
+	 		rm -f -rf results_"$CHROMOSOME"_"$DEFAULT_THRESH"
+	 	fi
+	 	mkdir results_"$CHROMOSOME"_"$DEFAULT_THRESH"
+		cd results_"$CHROMOSOME"_"$DEFAULT_THRESH"
+		echo "========================================"
+ 		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
+ 		echo "Region is not specified"
+ 		echo "Default threshold: 1000"
+ 		echo "Press control + z to quit the program"
+ 		echo "========================================"
+	 	python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$DEFAULT_THRESH"
 	# cd ..
 	fi
 fi
