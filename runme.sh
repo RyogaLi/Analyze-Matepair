@@ -139,7 +139,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
  		echo "Region start: ${REGIONSTART}"
  		echo "Region end: ${REGIONEND}"
- 		echo "Threshold: ${THRESHOLD}"
+ 		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		
@@ -169,6 +169,26 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH"
+
+	# ===================TEST CASE FOUR====================== #
+	# Chromosome name; threshold were provided 
+	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
+	elif [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && ! [ -z "$THRESHOLD" ]
+		then
+		# check if result file exists 
+	 	if [ -d results_"$CHROMOSOME"_"$THRESHOLD" ] # if yes, remove the old result directory
+	 		then
+	 		rm -f -rf results_"$CHROMOSOME"_"$THRESHOLD"
+	 	fi
+	 	mkdir results_"$CHROMOSOME"_"$THRESHOLD"
+		cd results_"$CHROMOSOME"_"$THRESHOLD"
+		echo "========================================"
+ 		echo "Analyzing ${CHROMOSOME} in file ${FILEPATH}............................."
+ 		echo "Region is not specified"
+ 		echo "Threshold: ${THRESHOLD}"
+ 		echo "Press control + z to quit the program"
+ 		echo "========================================"
+		python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$THRESHOLD"
 	# else 
 	# 	# then 
 	# 	python ../readFile.py "${FILENAME}" "" "" "" "$DEFAULT_THRESH"
