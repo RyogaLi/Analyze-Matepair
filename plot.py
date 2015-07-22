@@ -17,7 +17,7 @@ def plot(filename):
         plt.clf()
         plt.xlabel(filename2[1])
         plt.ylabel(filename2[0])
-        plt.title('Eliminated Low Complexity Region')
+        plt.title('Mate pairs')
         plt.plot(x, y, '.')
         figure = plt.gcf()
         figure.savefig(filename2[0]+'.'+filename2[1] + '.png', dpi=200)
