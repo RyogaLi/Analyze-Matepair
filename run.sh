@@ -3,7 +3,7 @@
 ## ./runme.sh -f WY1769.mapped.bam 
 
 # TEST CASE TWO
-./runme.sh -f WY1769.mapped.bam -c chrV -re 1000 -rs 500 -t 5000
+./runme.sh -f /users/RyogaLi/Desktop/WY1769.mapped.bam
 
 ## TEST CASE THREE
 ##./runme.sh -f WY1769.mapped.bam -c chrV -rs 20000 -re 25000

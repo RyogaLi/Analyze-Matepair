@@ -1,0 +1,32 @@
+This program analyzes mate pair positions
+
+================================================
+@ PARAMETERS
+
+-f <input file path> : the path has to be the full path of a BAM file
+-c <chromosome name> : i.e chrV 
+-rs <region start position> : if you want to focus on a specific region. Put the start position here
+-re <region end position> : if you want to focus on a specific region. Put the end position here
+** -rs -re has to be provided together. And -c chromosome name has to be provided
+-t <threshold> : when you are tring to focus on the mate pairs that have both end mapped to same 
+	chromosome. You can set the distance between two ends of one mate pair using -t. 
+	i.e: -t 2000 means only the mate pair that has two ends that are 2000bp away will be printed
+
+
+* -f CANNOT BE EMPTY
+* DEFAULT (if only the file name was provided) : mate pairs on all the chromosomes will be analyzed
+
+
+=================================================
+@ OUTPUT FILES
+
+* result_DEFAULT : DEFAULT analysis result directory. All the chromosomes were analyzed and result 
+	files are in this directory
+	* For each chromosome, one dir was generated
+* result_chromosome : if one chromosome was specified, this dir will be genrated
+* chromosome1.chromosome2.matepairs : contains all the mate pairs that have one end on chromosome1 
+	and the other end on chromosome2
+* chromosome1.threshold.matepairs : contains all the mate pairs that have both end on chromosome1
+	and two ends are <threshold>bp away from each other
+* chromosome1.chromosome2.png : a graph contains mate pair positions. (chromosome2 vs chromosome1)
+

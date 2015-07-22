@@ -10,7 +10,7 @@ if [[ "$#" = 0 ]]
 	echo ""
 	echo "ERROR: Filename cannot be none."
 	echo ""
-	echo "usage: runnme.sh -f <full path of bam file>"
+	echo "usage: runnme.sh -f <FULL PATH of bam file>"
 	echo "-c [optional]: <chromosome name>"
 	echo "-t [optional]: <threshold>"
 	echo "-rs [optional]: <start position> "
@@ -50,6 +50,7 @@ do
 	shift # past argument or value
 done
 echo "========================================"
+echo "NOTE: FILE NAME CANNOT BE EMPTY"
 echo FILE = "${FILEPATH}"
 echo CHROMOSOME  = "${CHROMOSOME}"
 echo REGION START     = "${REGIONSTART}"
@@ -87,7 +88,7 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		# creaate directory for each chromosome
  		mkdir $i
  		cd $i
- 		python ../../readFile.py ../../"${FILEPATH}" "$i" "" "" "$DEFAULT_THRESH"
+ 		python ../../readFile.py "${FILEPATH}" "$i" "" "" "$DEFAULT_THRESH"
  		for f in $FILE
  		do
  			# echo "$f"
@@ -145,7 +146,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		
-		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
+		python ../../readFile.py "${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$THRESHOLD"
 		echo "DONE"
 		FILE="./*"
 		for f in $FILE
@@ -176,7 +177,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH" 
+		python ../../readFile.py "${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH" 
 		for f in $FILE
  		do
  			# echo "$f"
@@ -202,7 +203,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Threshold: ${THRESHOLD}"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-		python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$THRESHOLD"
+		python ../../readFile.py "${FILEPATH}" "$CHROMOSOME" "" "" "$THRESHOLD"
 		for f in $FILE
  		do
  			# echo "$f"
@@ -228,7 +229,7 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-	 	python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOMEf" "" "" "$DEFAULT_THRESH"
+	 	python ../../readFile.py "${FILEPATH}" "$CHROMOSOMEf" "" "" "$DEFAULT_THRESH"
 		for f in $FILE
  		do
  			# echo "$f"
@@ -252,4 +253,17 @@ elif ! [ -z "$CHROMOSOME" ]
 		exit
 
 	fi
+else
+	echo "Please provide valid parameters"
+	echo ""
+	echo "usage: runnme.sh -f <full path of bam file>"
+	echo "-c [optional]: <chromosome name>"
+	echo "-t [optional]: <threshold>"
+	echo "-rs [optional]: <start position> "
+	echo "-re [optional]: <end position>"
+	echo ""
+	echo "DEFAULT(Only filename is provided): Analyze mate pairs on all chromosomes"
+	echo ""
+	exit
+
 fi
