@@ -16,7 +16,7 @@ if [[ "$#" = 0 ]]
 	echo "-rs [optional]: <start position> "
 	echo "-re [optional]: <end position>"
 	echo ""
-	echo "DEFAULT: Analyze mate pairs on all chromosomes"
+	echo "DEFAULT(Only filename is provided): Analyze mate pairs on all chromosomes"
 	echo ""
 	exit
 fi
@@ -49,13 +49,13 @@ do
 	esac
 	shift # past argument or value
 done
-# echo "========================================"
-# echo FILE = "${FILEPATH}"
-# echo CHROMOSOME  = "${CHROMOSOME}"
-# echo REGION START     = "${REGIONSTART}"
-# echo REGION END     = "${REGIONEND}"
-# echo THRESHOLD    = "${THRESHOLD}"
-# echo "========================================"
+echo "========================================"
+echo FILE = "${FILEPATH}"
+echo CHROMOSOME  = "${CHROMOSOME}"
+echo REGION START     = "${REGIONSTART}"
+echo REGION END     = "${REGIONEND}"
+echo THRESHOLD    = "${THRESHOLD}"
+echo "========================================"
 
 # case one: only filename is provided. All the chromosmes will be analyzed 
 # one directory will be generated for each chromosome
@@ -88,6 +88,11 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
  		mkdir $i
  		cd $i
  		python ../../readFile.py ../../"${FILEPATH}" "$i" "" "" "$DEFAULT_THRESH"
+ 		for f in $FILE
+ 		do
+ 			# echo "$f"
+ 			python ../../plot.py "$f"
+		done
  		cd ..
 	done
 
@@ -103,10 +108,7 @@ if [ -z "$CHROMOSOME" ] && [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z 
 # generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
 
 
-# ===================TEST CASE SIX====================== #
-# ERROR ONE: only start/end position is entered
-# ERROR TWO: no file name 
-# ERROR THREE: 
+
 
 elif ! [ -z "$CHROMOSOME" ]
 	then 
@@ -148,7 +150,7 @@ elif ! [ -z "$CHROMOSOME" ]
 		FILE="./*"
 		for f in $FILE
  		do
- 			echo "$f"
+ 			# echo "$f"
  			python ../../plot.py "$f"
 		done
 
@@ -174,7 +176,12 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Default threshold: 1000"
  		echo "Press control + z to quit the program"
  		echo "========================================"
-		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH" &
+		python ../../readFile.py ../../"${FILEPATH}" "${CHROMOSOME}" "$REGIONSTART" "$REGIONEND" "$DEFAULT_THRESH" 
+		for f in $FILE
+ 		do
+ 			# echo "$f"
+ 			python ../../plot.py "$f"
+		done
 		
 
 	# ===================TEST CASE FOUR====================== #
@@ -196,12 +203,17 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Press control + z to quit the program"
  		echo "========================================"
 		python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOME" "" "" "$THRESHOLD"
-	
+		for f in $FILE
+ 		do
+ 			# echo "$f"
+ 			python ../../plot.py "$f"
+		done
 
 	# ===================TEST CASE FIVE====================== #
 	# Only chromosome name is provided 
 	# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
-	else 
+	elif [ -z "$REGIONSTART" ] && [ -z "$REGIONEND" ] && [ -z "$THRESHOLD" ]
+		then
 	 	# then 
 	 	# check if result file exists 
 	 	if [ -d results_"$CHROMOSOME"_"$DEFAULT_THRESH" ] # if yes, remove the old result directory
@@ -217,6 +229,27 @@ elif ! [ -z "$CHROMOSOME" ]
  		echo "Press control + z to quit the program"
  		echo "========================================"
 	 	python ../../readFile.py ../../"${FILEPATH}" "$CHROMOSOMEf" "" "" "$DEFAULT_THRESH"
-	# cd ..
+		for f in $FILE
+ 		do
+ 			# echo "$f"
+ 			python ../../plot.py "$f"
+		done
+	
+	# ===================TEST CASE SIX====================== #
+	# ERROR ONE: only start/end position is entered
+	# ERROR TWO: no file name 
+	else
+		echo "Please provide valid parameters"
+		echo ""
+		echo "usage: runnme.sh -f <full path of bam file>"
+		echo "-c [optional]: <chromosome name>"
+		echo "-t [optional]: <threshold>"
+		echo "-rs [optional]: <start position> "
+		echo "-re [optional]: <end position>"
+		echo ""
+		echo "DEFAULT(Only filename is provided): Analyze mate pairs on all chromosomes"
+		echo ""
+		exit
+
 	fi
 fi

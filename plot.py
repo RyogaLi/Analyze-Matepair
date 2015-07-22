@@ -13,7 +13,6 @@ def plot(filename):
                         x.append(int(line[7]))
                         y.append(int(line[3]))
                         inputfile.next()
-        # inputfile.close()
         filename2 = filename.split('/')[1].split('.')
         plt.clf()
         plt.xlabel(filename2[1])
@@ -27,5 +26,4 @@ def plot(filename):
 if __name__ == '__main__':
         f = sys.argv[1]
         plot(f)
-# plot("chrV.chrXII.matepair")
-# plot("chrV.chrXIV.matepairs")
+

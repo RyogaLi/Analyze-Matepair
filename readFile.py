@@ -40,10 +40,10 @@ def parseFile(filename, chromosome, start, end, threshold):
 	# print(chromosome,start, end)
 	# if we want to focus on a region on one sepecific chromosome
 	if chromosome != "" and start != "" and end != "":
-
 		start = int(start)
 		end = int(end)
 		# fetch the reads within region on chromosome
+		print ("Finding mate pairs .... This step will take a while")
 		for read in mappedBam.fetch(chromosome, start, end):
 			# check if the mate is mapped or not 
 			if not read.mate_is_unmapped:
@@ -51,6 +51,7 @@ def parseFile(filename, chromosome, start, end, threshold):
 				mate = mappedBam.mate(read)
 				# if mate pair is on another chromosome
 				if mate.reference_id != read.reference_id:
+
 					# make a new file and store the mate pairs 
 					fName = chromosome+"."+ID_Name[mate.reference_id]+".matepairs"
 					f = open(fName, "a")
@@ -66,8 +67,8 @@ def parseFile(filename, chromosome, start, end, threshold):
 						f.write(str(mate)+"\n")
 				# readPairs.append((read,mappedBam.mate(read)))
 	elif chromosome != "" and start == "" and end == "":
+		print ("Finding mate pairs .... This step will take a while")
 		# fetch the reads on chromosome
-		print ("test print one")
 		for read in mappedBam.fetch(chromosome):
 			if not read.mate_is_unmapped:
 				# find it's mate pair
@@ -119,15 +120,6 @@ if __name__ == '__main__':
 	start = sys.argv[3]
 	end = sys.argv[4]
 	threshold = sys.argv[5]
-	if start == "" and end != "":
-		print("ERROR: please provide a valid region")
-		quit()
-	if end == "" and start != "":
-		print("ERROR: please provide a valid region")
-		quit()
-	if chromosome == "" and (start != "" or end != ""):
-		print("ERROR: chromosome cannot be NONE if you stated region")
-		quit()
 
 	parseFile(bamFile, chromosome, start, end, threshold)
 	quit()
