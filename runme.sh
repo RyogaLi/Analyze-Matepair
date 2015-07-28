@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# sort a bam file
+
+
 # default: analyze all the chromosomes
 # store all the chromosomes' name in an array
 chrs=("chrI" "chrII" "chrIII" "chrIV" "chrV" "chrVI" "chrVII" "chrVIII" "chrIX" "chrX" "chrXI" "chrXII" "chrXIII" "chrXIV" "chrXV" "chrXVI" "chrM")
