@@ -1,6 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
-
+chrs=["chrI","chrII","chrIII","chrIV","chrV","chrVI","chrVII","chrVIII","chrIX","chrX",
+"chrXI","chrXII","chrXIII","chrXIV","chrXV","chrXVI","chrM"]
 def plot(filename):
         """
         Take out the mapping position (start position) from a formated text file and save them in (x,y)
@@ -16,7 +17,10 @@ def plot(filename):
         filename2 = filename.split('/')[1].split('.')
         plt.clf()
         plt.xlabel(filename2[1])
-        plt.ylabel(filename2[0])
+        if filename2[0] not in chrs:
+                plt.ylabel(filename2[1])
+        else:
+                plt.ylabel(filename2[0])
         plt.title('Mate pairs')
         plt.plot(x, y, '.')
         figure = plt.gcf()

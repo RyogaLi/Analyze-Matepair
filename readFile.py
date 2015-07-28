@@ -3,7 +3,6 @@
 import pysam
 import sys
 import os
-import matplotlib.pyplot as plt
 
 # chr ID = [0,1,2,...,16]
 # take a sorted.mapped.bam file
@@ -90,29 +89,6 @@ def parseFile(filename, chromosome, start, end, threshold):
 						f.write(str(mate)+"\n")
 
 
-# ===================TEST CASE ONE====================== #
-# No chromosome is provided. Run default parameters
-# generate 16 directories and each directory contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
-
-# ===================TEST CASE TWO====================== #
-# Only chromosome name is provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
-
-# ===================TEST CASE THREE====================== #
-# Chromosome name; start region; end region were provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.1000.matepairs
-
-# ===================TEST CASE FOUR====================== #
-# Chromosome name; start region; end region; threshold were provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
-
-# ===================TEST CASE FIVE====================== #
-# Chromosome name; threshold were provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
-
-# ===================TEST CASE SIX====================== #
-# Only threshold is provided 
-# generate one directory which contains chromosome1.chromosome2.matepairs and chromosome.threshold.matepairs
 
 if __name__ == '__main__':
 	bamFile = sys.argv[1]
